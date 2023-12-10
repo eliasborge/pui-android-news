@@ -1,13 +1,9 @@
 package com.example.android_news_pui;
 
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.List;
-
 import org.json.simple.JSONObject;
+
+import java.util.Hashtable;
 
 import es.upm.hcid.pui.assignment.exceptions.ServerCommunicationError;
 
