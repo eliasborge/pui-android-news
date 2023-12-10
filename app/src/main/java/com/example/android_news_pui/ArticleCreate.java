@@ -4,18 +4,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 
 public class ArticleCreate extends AppCompatActivity {
 
     private EditText titleEditText, abstractEditText, bodyEditText;
     private Spinner categorySpinner;
     private String selectedCategory;
-
+    private Button sendButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,7 @@ public class ArticleCreate extends AppCompatActivity {
         abstractEditText = findViewById(R.id.AbstractInput);
         bodyEditText = findViewById(R.id.BodyInput);
         categorySpinner = findViewById(R.id.CategorySpinner);
+        sendButton = findViewById(R.id.SendButton);
 
         populateSpinner();
 
@@ -39,6 +41,14 @@ public class ArticleCreate extends AppCompatActivity {
                 // Do nothing
             }
         });
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveData();
+            }
+        });
+
     }
 
     private void populateSpinner() {
@@ -61,7 +71,7 @@ public class ArticleCreate extends AppCompatActivity {
         // For example, you can pass them to another activity or perform any other actions.
 
         // Display a Toast message (you can replace this with your actual logic)
-        Toast.makeText(this, "Data Saved:\nTitle: " + title + "\nAbstract: " + abstractText +
-                "\nBody: " + body + "\nCategory: " + selectedCategory, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Title: " + title + " Abstract: " + abstractText +
+                " Body: " + body + " Category: " + selectedCategory, Toast.LENGTH_LONG).show();
     }
 }
