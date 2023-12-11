@@ -1,11 +1,6 @@
 package com.example.android_news_pui;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import java.time.temporal.TemporalField;
 import java.util.Hashtable;
 
 import org.json.simple.JSONObject;
@@ -111,7 +106,7 @@ public class Image extends ModelEntity{
 		return res;
 	}
 	
-	public String getImage(){
+	public TemporalField getImage(){
 		return image;
 	}
 	

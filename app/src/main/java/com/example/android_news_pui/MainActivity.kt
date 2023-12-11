@@ -1,46 +1,34 @@
 package com.example.android_news_pui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.android_news_pui.ui.theme.Android_news_puiTheme
+import androidx.recyclerview.widget.RecyclerView
+import com.example.android_news_pui.ModelManager
 
 class MainActivity : ComponentActivity() {
+
+    private var recyclerView: RecyclerView? = null
+    private var articleAdapter: ArticleAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            Android_news_puiTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
-        }
+        setContentView(R.layout.activity_main)
+
+        recyclerView = findViewById(R.id.recyclerview)
+        articleAdapter = ArticleAdapter(ArrayList())
+        recyclerView?.adapter = articleAdapter
+
+        // Fetch articles from the server
+        FetchArticlesTask().execute()
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Android_news_puiTheme {
-        Greeting("Android")
+    private inner class FetchArticlesTask : AsyncTask<Void, Void, List<Article>>() {
+        override fun doInBackground(vararg params: Void): List<Article> {
+            // Adjust the buffer and offset values as needed
+            val buffer = 0
+            val offset = 0
+            return ModelManager.getArticles(buffer, offset)
+        }
     }
 }
