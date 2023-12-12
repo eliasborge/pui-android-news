@@ -1,6 +1,4 @@
 package com.example.android_news_pui;
-
-
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import android.widget.TextView;
-
+import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,16 +44,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         // Load thumbnail using Glide or any other image loading library
         try {
             if (article.getImage() != null) {
-                Instant Glide = null;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    try {
-                        Glide.with((TemporalAdjuster) holder.itemView)
-                                .get(article.getImage().getImage()) // Use the correct method to get the image URL from the Image class
-                                .into(holder.imageThumbnail);
-                    } catch (ServerCommunicationError e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                String imageUrl = article.getImage().getImage();  // Assuming getImage() returns the URL or path
+                // Remove this line: Instant Glide = null;
+                Glide.with(holder.itemView.getContext())
+                        .load(imageUrl)
+                        .into(holder.imageThumbnail);
             }
         } catch (ServerCommunicationError e) {
             throw new RuntimeException(e);
@@ -65,6 +58,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public int getItemCount() {
         return articles.size();
+    }
+
+    public void setArticles(@NotNull List<? extends Article> articles) {
+        this.articles = (List<Article>) articles;
+        notifyDataSetChanged();
     }
 
 
