@@ -1,46 +1,57 @@
 package com.example.android_news_pui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.android_news_pui.ui.theme.Android_news_puiTheme
+import androidx.recyclerview.widget.RecyclerView
+import java.util.Properties
 
 class MainActivity : ComponentActivity() {
+
+    var mm: ModelManager? = null
+
+    val prop = Properties()
+    private var recyclerView: RecyclerView? = null
+    private var articleAdapter: ArticleAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        setContent {
-            Android_news_puiTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
-        }
+        setContentView(R.layout.activity_main)
+
+
+        prop.setProperty(ModelManager.ATTR_LOGIN_USER, "DEV_TEAM_03")
+        prop.setProperty(ModelManager.ATTR_LOGIN_PASS, "123703@3")
+        prop.setProperty(
+            ModelManager.ATTR_SERVICE_URL,
+            "https://sanger.dia.fi.upm.es/pui-rest-news/"
+        )
+        //prop.setProperty(ModelManager.ATTR_REQUIRE_SELF_CERT, "TRUE")
+
+
+
+        recyclerView = findViewById(R.id.recyclerview)
+        articleAdapter = ArticleAdapter(ArrayList())
+        recyclerView?.adapter = articleAdapter
+
+        // Fetch articles from the server
+        FetchArticlesTask().execute()
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    private inner class FetchArticlesTask : AsyncTask<Void, Void, List<Article>>() {
+        override fun doInBackground(vararg params: Void): List<Article> {
+            mm = ModelManager(prop)
+            // Adjust the buffer and offset values as needed
+            val buffer = 10
+            val offset = 0
+            return mm?.getArticles(buffer, offset) ?: emptyList()
+        }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Android_news_puiTheme {
-        Greeting("Android")
+        override fun onPostExecute(articles: List<Article>) {
+            super.onPostExecute(articles)
+            // Update the adapter with the new data
+            articleAdapter?.setArticles(articles)
+            articleAdapter?.notifyDataSetChanged()
+        }
     }
 }
