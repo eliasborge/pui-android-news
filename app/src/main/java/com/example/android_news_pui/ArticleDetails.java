@@ -40,7 +40,9 @@ public class ArticleDetails extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openImagePicker();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    openImagePicker();
+                }
             }
         });
 
@@ -112,7 +114,9 @@ public class ArticleDetails extends AppCompatActivity {
         switch (requestCode) {
             case PICK_IMAGE_REQUEST:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openImagePicker();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        openImagePicker();
+                    }
                 } else {
                     // Permission denied
                     Toast.makeText(this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
