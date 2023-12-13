@@ -1,5 +1,9 @@
 package com.example.android_news_pui;
 
+import android.os.Parcel;
+
+import androidx.annotation.NonNull;
+
 import java.util.Hashtable;
 
 import org.json.simple.JSONObject;
@@ -108,6 +112,6 @@ public class Image extends ModelEntity{
 	public String getImage(){
 		return image;
 	}
-	
+
 
 }

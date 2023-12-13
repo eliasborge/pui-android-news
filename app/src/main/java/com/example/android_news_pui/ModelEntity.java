@@ -1,5 +1,8 @@
 package com.example.android_news_pui;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -10,6 +13,10 @@ import es.upm.hcid.pui.assignment.exceptions.ServerCommunicationError;
 public abstract class ModelEntity {
 	protected int id;
 	protected ModelManager mm;
+
+	public ModelEntity(){
+
+	}
 	
 	/**
 	 * 

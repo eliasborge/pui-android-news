@@ -1,13 +1,19 @@
 package com.example.android_news_pui;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+import androidx.core.os.ParcelableCompatCreatorCallbacks;
+
 import org.json.simple.JSONObject;
 
 import java.util.Hashtable;
 
 import es.upm.hcid.pui.assignment.exceptions.ServerCommunicationError;
 
-public class Article extends ModelEntity {
+public class Article extends ModelEntity implements Parcelable {
 	
 	private String titleText;
 	private String category;
@@ -160,5 +166,51 @@ public class Article extends ModelEntity {
 
 		//res.put("publication_date", publicationDate==null?null:Utils.dateToString(publicationDate));
 		return res;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(@NonNull Parcel parcel, int i) {
+		parcel.writeString(titleText);
+		parcel.writeString(bodyText);
+		parcel.writeString(abstractText);
+		parcel.writeString(footerText);
+		parcel.writeString(imageDescription);
+		parcel.writeString(category);
+		parcel.writeString(thumbnail);
+		parcel.writeInt(id);
+		//parcel.writeString(mainImage.getImage());
+
+	}
+
+	// Parcelable.Creator
+	public static final Parcelable.Creator<Article> CREATOR = new Parcelable.Creator<Article>() {
+		public Article createFromParcel(Parcel in) {
+			return new Article(in); //
+		}
+
+		public Article[] newArray(int size) {
+			return new Article[size];
+		}
+	};
+
+	// Constructor that takes a Parcel and gives you an object populated with its values
+	protected Article(Parcel in) {
+
+
+		// Read your properties from the parcel
+		titleText = in.readString();
+		bodyText = in.readString();
+		abstractText = in.readString();
+		footerText = in.readString();
+		imageDescription = in.readString();
+		category = in.readString();
+		thumbnail = in.readString();
+		id = in.readInt();
+
 	}
 }
