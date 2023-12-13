@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
 
         recyclerView = findViewById(R.id.recyclerview)
-        articleAdapter = ArticleAdapter(ArrayList())
+        articleAdapter = ArticleAdapter(ArrayList(),this)
         recyclerView?.adapter = articleAdapter
 
         // Fetch articles from the server

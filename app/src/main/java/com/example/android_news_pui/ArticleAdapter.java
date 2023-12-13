@@ -1,4 +1,6 @@
 package com.example.android_news_pui;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +23,11 @@ import es.upm.hcid.pui.assignment.exceptions.ServerCommunicationError;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
     private List<Article> articles;
+    private Context context;
 
-    public ArticleAdapter(List<Article> articles) {
+    public ArticleAdapter(List<Article> articles, Context context) {
         this.articles = articles;
+        this.context = context;
     }
 
     @NonNull
@@ -36,6 +40,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         Article article = articles.get(position);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ArticleDetails.class);
+            intent.putExtra("ARTICLE", article);
+            context.startActivity(intent);
+        });
 
         holder.textTitle.setText(article.getTitleText());
         holder.textAbstract.setText(article.getAbstractText());
