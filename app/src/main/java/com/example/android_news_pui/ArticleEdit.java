@@ -1,5 +1,10 @@
 package com.example.android_news_pui;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,24 +14,15 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import java.util.Properties;
 
-import es.upm.hcid.pui.assignment.exceptions.AuthenticationError;
-import es.upm.hcid.pui.assignment.exceptions.ServerCommunicationError;
-
-public class ArticleCreate extends AppCompatActivity {
+public class ArticleEdit extends AppCompatActivity {
 
     private EditText titleEditText, abstractEditText, bodyEditText;
     private Spinner categorySpinner;
@@ -34,50 +30,50 @@ public class ArticleCreate extends AppCompatActivity {
     private Button sendButton;
     private ImageView imageView;
     private static final int PICK_IMAGE_REQUEST = 1;
-
     private Article article;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_article_create);
+        setContentView(R.layout.activity_article_edit);
 
-        titleEditText = findViewById(R.id.TitleInput);
-        abstractEditText = findViewById(R.id.AbstractInput);
-        bodyEditText = findViewById(R.id.BodyInput);
-        categorySpinner = findViewById(R.id.CategorySpinner);
-        sendButton = findViewById(R.id.SendButton);
+        // Assuming Article object is passed via intent
+        Article article = (Article) getIntent().getParcelableExtra("ARTICLE");
 
-        populateSpinner();
-        imageView = findViewById(R.id.ivImage); // Make sure ivImage is the ID of your ImageView
+        if (article !=null){
+            titleEditText = findViewById(R.id.TitleInput);
+            abstractEditText = findViewById(R.id.AbstractInput);
+            bodyEditText = findViewById(R.id.BodyInput);
+            categorySpinner = findViewById(R.id.CategorySpinner);
+            sendButton = findViewById(R.id.SendButton);
+            populateSpinner();
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    openImagePicker();
+            imageView = findViewById(R.id.ivImage);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { openImagePicker();}
                 }
-            }
-        });
+            });
 
-        // Set a listener for spinner item selection
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                selectedCategory = parentView.getItemAtPosition(position).toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing
-            }
-        });
+            // Listener for spinner item selection
+            categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selectedCategory = parentView.getItemAtPosition(position).toString();
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {} // Do nothing
+            });
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveData();
-            }
-        });
-
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {saveData();}
+            });
+        }else{ // article == null
+            Toast.makeText(this, "Article data not available.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void populateSpinner() {
@@ -90,7 +86,6 @@ public class ArticleCreate extends AppCompatActivity {
         categorySpinner.setAdapter(adapter); // Apply the adapter to the spinner
     }
 
-    // Method to save the inputed data (you can call this method when a button is clicked, for example)
     private void saveData() {
         article.setTitleText(titleEditText.getText().toString());
         article.setAbstractText(abstractEditText.getText().toString());
@@ -103,21 +98,23 @@ public class ArticleCreate extends AppCompatActivity {
         Properties prop = new Properties();
         prop.setProperty(ModelManager.ATTR_LOGIN_USER, "DEV_TEAM_03");
         prop.setProperty(ModelManager.ATTR_LOGIN_PASS, "123703@3");
-        prop.setProperty(ModelManager.ATTR_SERVICE_URL,"https://sanger.dia.fi.upm.es/pui-rest-news/");
+        prop.setProperty(
+                ModelManager.ATTR_SERVICE_URL,
+                "https://sanger.dia.fi.upm.es/pui-rest-news/"
+        );
 
         try {
             ModelManager modman = new ModelManager(prop);
             modman.save(article);
-        } catch (AuthenticationError e) {
+        } catch (es.upm.hcid.pui.assignment.exceptions.AuthenticationError e) {
             Toast.makeText(this, "Authentication Error.", Toast.LENGTH_SHORT).show();
             finish();
-        } catch (ServerCommunicationError e) {
+        } catch (es.upm.hcid.pui.assignment.exceptions.ServerCommunicationError e) {
             Toast.makeText(this, "Server Communication Error.", Toast.LENGTH_SHORT).show();
             finish();
         }
+
     }
-
-
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void openImagePicker() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
