@@ -1,4 +1,10 @@
 package com.example.android_news_pui;
+<<<<<<< Updated upstream
+=======
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+>>>>>>> Stashed changes
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,14 +47,16 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         holder.textAbstract.setText(article.getAbstractText());
         holder.textCategory.setText(article.getCategory());
 
-        // Load thumbnail using Glide or any other image loading library
         try {
             if (article.getImage() != null) {
-                String imageUrl = article.getImage().getImage();  // Assuming getImage() returns the URL or path
-                // Remove this line: Instant Glide = null;
-                Glide.with(holder.itemView.getContext())
-                        .load(imageUrl)
-                        .into(holder.imageThumbnail);
+                String base64Image = article.getImage().getImage();  // Assuming getImage() returns the base64 encoded image
+                String scaledBase64Image = Utils.createScaledStrImage(base64Image, 500, 500);
+
+                // Convert the scaled base64 string to a Bitmap
+                Bitmap scaledBitmap = Utils.base64StringToImg(scaledBase64Image);
+
+                // Load the Bitmap into the ImageView
+                holder.imageThumbnail.setImageBitmap(scaledBitmap);
             }
         } catch (ServerCommunicationError e) {
             throw new RuntimeException(e);
