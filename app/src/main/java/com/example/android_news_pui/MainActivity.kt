@@ -3,8 +3,15 @@ package com.example.android_news_pui
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Properties
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+
 
 class MainActivity : ComponentActivity() {
 
@@ -13,6 +20,7 @@ class MainActivity : ComponentActivity() {
     val prop = Properties()
     private var recyclerView: RecyclerView? = null
     private var articleAdapter: ArticleAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -34,7 +42,9 @@ class MainActivity : ComponentActivity() {
         articleAdapter = ArticleAdapter(ArrayList())
         recyclerView?.adapter = articleAdapter
 
-        // Fetch articles from the server
+        // Find the NavController
+        // Initialize the NavController
+
         FetchArticlesTask().execute()
     }
 

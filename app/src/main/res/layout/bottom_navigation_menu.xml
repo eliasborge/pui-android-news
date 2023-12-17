@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <item
+        android:id="@+id/allFragment"
+        android:title="All"
+        android:icon="@drawable/ic_all" />
+    <item
+        android:id="@+id/internationalFragment"
+        android:title="International"
+        android:icon="@drawable/ic_international" />
+    <item
+        android:id="@+id/technologyFragment"
+        android:title="Technology"
+        android:icon="@drawable/ic_technology" />
+</LinearLayout>
+

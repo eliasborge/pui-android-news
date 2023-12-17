@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/navigation/nav_graph.xml -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/allFragment">
+
+    <fragment
+        android:id="@+id/allFragment"
+        android:name="com.example.android_news_pui.AllFragment"
+        android:label="AllFragment">
+        <action
+            android:id="@+id/action_allFragment_to_articlesFragment"
+            app:destination="@id/articlesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/internationalFragment"
+        android:name="com.example.android_news_pui.InternationalFragment"
+        android:label="InternationalFragment">
+        <action
+            android:id="@+id/action_internationalFragment_to_articlesFragment"
+            app:destination="@id/articlesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/technologyFragment"
+        android:name="com.example.android_news_pui.TechnologyFragment"
+        android:label="TechnologyFragment">
+        <action
+            android:id="@+id/action_technologyFragment_to_articlesFragment"
+            app:destination="@id/articlesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articlesFragment"
+        android:name="com.example.android_news_pui.ArticlesFragment"
+        android:label="ArticlesFragment">
+        <action
+            android:id="@+id/action_articlesFragment_to_allFragment"
+            app:destination="@id/allFragment" />
+    </fragment>
+</navigation>
